@@ -13,7 +13,6 @@ def slicer(bv, address,direction):
         q = Queue.Queue()
         for i in var_s:
             q.put(i)
-    ## Also multithreading
         while not q.empty():
             var = q.get()
             temp = ml.get_ssa_var_uses(var)
@@ -35,14 +34,13 @@ def slicer(bv, address,direction):
                 data = temp.ssa_form.vars_read
                 for j in data:
                     q.put(j)
-    ##COMPLETED
     bv.begin_undo_actions()
     for i in colorize:
         function.set_user_instr_highlight(i,bn.HighlightStandardColor.BlueHighlightColor)
     bv.commit_undo_actions()
-def slicing_back(bv,address):
+def s_b(bv,address):
     slicer(bv,address,'B')
-def slicing_forward(bv,address):
+def s_f(bv,address):
     slicer(bv,address,'F')
-bn.PluginCommand.register_for_address("Backward slicing", "Perform a backward slicing for this instruction", slicing_back)
-bn.PluginCommand.register_for_address("Forward slicing", "Perform a forward slicing for this instruction", slicing_forward)
+bn.PluginCommand.register_for_address("Backward slicing", "Perform a backward slicing from this address", s_b)
+bn.PluginCommand.register_for_address("Forward slicing", "Perform a forward slicing from this address", s_f)
