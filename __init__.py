@@ -1,5 +1,9 @@
 import binaryninja as bn
-import Queue 
+import sys
+if (sys.version[0] == '2'):
+    import Queue 
+else:
+    import queue as Queue
 def slicer(bv, address,direction):
     colorize = []
     colorize.append(address)
